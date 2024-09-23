@@ -11,9 +11,11 @@ import { Button } from "../ui/button.tsx";
 import { TabItem, TabList } from "../ui/tabs.tsx";
 import { cn } from "../utils/cn.ts";
 import { GameState, useGameStore } from "../utils/stores/use-game-store.ts";
+import { useRulesPopupStore } from "../utils/stores/use-rules-popup-store.ts";
 
 export function GameLeftBlock() {
   const state = useGameStore((state) => state.state);
+  const openRules = useRulesPopupStore((state) => state.open);
 
   return (
     <div
@@ -37,7 +39,10 @@ export function GameLeftBlock() {
           <div className="left-jackpot__wrapper">
             <JackpotValue />
           </div>
-          <Button className="button-info self-center mb-[calc(8px*var(--zoomCoef))]" />
+          <Button
+            onClick={openRules}
+            className="button-info self-center mb-[calc(8px*var(--zoomCoef))]"
+          />
         </header>
         <Timeline />
       </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MenuSettings } from "../components/menu-settings.tsx";
+import { Rules } from "../components/rules.tsx";
 import { Button } from "../ui/button.tsx";
 import { cn } from "../utils/cn.ts";
 import { useGameWrapperSizes } from "../utils/hooks/useGameWrapperSizes.ts";
@@ -54,14 +55,16 @@ export function Game() {
     <div>
       <header
         className={
-          "h-[40px] bg-black/80 w-full flex justify-center items-center"
+          "h-[40px] text-[#cca456] bg-black/80 w-full flex justify-between px-4 items-center"
         }
       >
-        <span className="text-28">Game header</span>
+        <span className="text-40">Dog6</span>
+        <span className="text-26">Вы играете на демо счет</span>
         <Button onClick={onFit}>Fit</Button>
       </header>
       <div id="game" className={cn("game-container overflow-hidden")}>
         <MenuSettings />
+        <Rules />
         <div
           className={cn(
             "game-container__content",

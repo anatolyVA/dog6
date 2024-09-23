@@ -3,6 +3,7 @@ import { BetTable } from "../components/bet-table.tsx";
 import { Button } from "../ui/button.tsx";
 import { cn } from "../utils/cn.ts";
 import { GameState, useGameStore } from "../utils/stores/use-game-store.ts";
+import { useMenuPopupStore } from "../utils/stores/use-menu-popup-store.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
 
 export function GameRightBlock() {
@@ -54,6 +55,7 @@ function GameRightBlockControls() {
   const selectedLength =
     whoWins.length + exacta.length + trifecta.length + quinella.length;
   const isActive = selectedLength > 0 && gameState === GameState.BETS;
+  const openMenu = useMenuPopupStore((state) => state.open);
 
   const handleBet = () => {
     clear();
@@ -63,7 +65,7 @@ function GameRightBlockControls() {
     <>
       <div className="grid grid-cols-1 grid-rows-[2_1fr]">
         <div className="flex justify-between items-center text-30">
-          <Button className="button-menu sprite">
+          <Button onClick={openMenu} className="button-menu sprite">
             <div className="uppercase text-[#fcd703] scale-text">Меню</div>
           </Button>
           <Button className="button-menu sprite">

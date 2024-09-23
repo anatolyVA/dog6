@@ -1,8 +1,8 @@
 type SoundValue = "on" | "off";
 type VideoValue = "on" | "off";
-type VideoQualityValue = "auto" | "high" | "low";
+export type VideoQualityValue = "auto" | "high" | "low";
 
-interface ISettings {
+export interface ISettings {
   sound: SoundValue;
   video: VideoValue;
   videoQuality: VideoQualityValue;

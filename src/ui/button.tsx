@@ -1,5 +1,6 @@
 import React from "react";
 import { cn } from "../utils/cn.ts";
+import { getSettings } from "../utils/stores/settings.ts";
 
 interface ButtonProps extends React.ComponentProps<"button"> {
   backgroundImage?: string;
@@ -7,9 +8,10 @@ interface ButtonProps extends React.ComponentProps<"button"> {
 
 export function Button({ onClick, children, ...props }: ButtonProps) {
   const sound = new Audio("src/assets/sounds/but.mp3");
+  const settings = getSettings();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (sound) {
+    if (sound && settings.sound === "on") {
       sound.pause();
       sound.currentTime = 0;
       sound.play();

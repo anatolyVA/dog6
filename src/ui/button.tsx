@@ -7,14 +7,12 @@ interface ButtonProps extends React.ComponentProps<"button"> {
 }
 
 export function Button({ onClick, children, ...props }: ButtonProps) {
-  const sound = new Audio("src/assets/sounds/but.mp3");
   const settings = getSettings();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const sound = new Audio("src/assets/sounds/but.mp3");
     if (sound && settings.sound === "on") {
-      sound.pause();
-      sound.currentTime = 0;
-      sound.play();
+      sound.play().catch(() => console.error("Unable to play sound"));
     }
     onClick?.(e);
   };

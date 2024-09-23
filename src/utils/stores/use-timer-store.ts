@@ -35,7 +35,6 @@ export const useTimerStore = create<State & Action>((set) => ({
       return {
         resultTimeout: undefined,
         gameTimeout: undefined,
-        timer: state.seconds,
       };
     });
   },

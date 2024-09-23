@@ -48,8 +48,12 @@ function GameRightBlockControls() {
     whoWins.length + exacta.length + trifecta.length + quinella.length;
   const isActive = selectedLength > 0 && gameState === GameState.BETS;
   const openMenu = useMenuPopupStore((state) => state.open);
+  const setBalance = useGameStore((state) => state.setBalance);
+  const balance = useGameStore((state) => state.balance);
 
   const handleBet = () => {
+    const total = count * selectedLength;
+    setBalance(balance - total);
     const coupons: Coupon[] = [
       ...whoWins,
       ...exacta,

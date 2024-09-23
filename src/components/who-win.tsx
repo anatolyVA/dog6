@@ -31,60 +31,46 @@ export function WhoWin() {
         <RateItem className="big-6" rate={3} />
       </div>
       <div className="who-win__main-table">
-        <WhoWinRow
-          label="Победитель"
-          iconName="win-1_1"
-          coeffs={coeffs}
-          selected={filterDogsByBetType(BetType.WINNER)}
-          onSelectBet={onSelectBet}
-          betType={BetType.WINNER}
-        />
-        <WhoWinRow
-          label={BetType.FIRST_OR_SECOND}
-          iconName="win-2_1"
-          coeffs={coeffs}
-          selected={filterDogsByBetType(BetType.FIRST_OR_SECOND)}
-          onSelectBet={onSelectBet}
-          betType={BetType.FIRST_OR_SECOND}
-        />
-        <WhoWinRow
-          label={BetType.FIRST_BETWEEN_THIRD}
-          iconName="win-3_1"
-          coeffs={coeffs}
-          selected={filterDogsByBetType(BetType.FIRST_BETWEEN_THIRD)}
-          onSelectBet={onSelectBet}
-          betType={BetType.FIRST_BETWEEN_THIRD}
-        />
+        {[
+          { label: "Победитель", iconName: "win-1_1", betType: BetType.WINNER },
+          {
+            label: BetType.FIRST_OR_SECOND,
+            iconName: "win-2_1",
+            betType: BetType.FIRST_OR_SECOND,
+          },
+          {
+            label: BetType.FIRST_BETWEEN_THIRD,
+            iconName: "win-3_1",
+            betType: BetType.FIRST_BETWEEN_THIRD,
+          },
+        ].map((props, index) => (
+          <WhoWinRow
+            key={index}
+            label={props.label}
+            iconName={props.iconName}
+            coeffs={coeffs}
+            selected={filterDogsByBetType(props.betType)}
+            onSelectBet={onSelectBet}
+            betType={props.betType}
+          />
+        ))}
       </div>
       <div className="flex justify-between items-center h-full w-full">
-        <SelectOdd
-          label="Нечёт"
-          coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === BetType.ODD)}
-          onSelect={onSelectBet}
-          betType={BetType.ODD}
-        />
-        <SelectOdd
-          label="Чёт"
-          coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === BetType.EVEN)}
-          onSelect={onSelectBet}
-          betType={BetType.EVEN}
-        />
-        <SelectOdd
-          label="Меньше"
-          coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === BetType.BELOW)}
-          onSelect={onSelectBet}
-          betType={BetType.BELOW}
-        />
-        <SelectOdd
-          label="Больше"
-          coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === BetType.ABOVE)}
-          onSelect={onSelectBet}
-          betType={BetType.ABOVE}
-        />
+        {[
+          { label: "Нечёт", coeff: 5.5, betType: BetType.ODD },
+          { label: "Чёт", coeff: 5.5, betType: BetType.EVEN },
+          { label: "Меньше", coeff: 5.5, betType: BetType.BELOW },
+          { label: "Больше", coeff: 5.5, betType: BetType.ABOVE },
+        ].map((props, index) => (
+          <SelectOdd
+            key={index}
+            label={props.label}
+            betType={props.betType}
+            coeff={props.coeff}
+            isSelected={!!whoWins.find((b) => b.betType === props.betType)}
+            onSelect={onSelectBet}
+          />
+        ))}
       </div>
     </div>
   );

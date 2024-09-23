@@ -1,5 +1,7 @@
+import { useGameStore } from "../utils/stores/use-game-store.ts";
+
 export function Balance() {
-  const balance = 500;
+  const balance = useGameStore((state) => state.balance);
 
   const balanceStr = balance.toLocaleString("en-US", {
     minimumFractionDigits: 2,

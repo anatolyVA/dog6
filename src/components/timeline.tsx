@@ -29,6 +29,9 @@ export function Timeline() {
   const setCoupons = useCouponStore((state) => state.setCoupons);
   const coupons = useCouponStore((state) => state.coupons);
 
+  const balance = useGameStore((state) => state.balance);
+  const setBalance = useGameStore((state) => state.setBalance);
+
   useEffect(() => {
     if (state === GameState.BETS) {
       clearCoupons();
@@ -63,8 +66,10 @@ export function Timeline() {
           // random win
           const randomWin = coupons.map((value) => ({
             ...value,
-            win: Math.random() > 0.5 ? value.coeff * value.bet : 0,
+            win: Math.random() > 0.9 ? value.coeff * value.bet : 0,
           }));
+          const total = randomWin.reduce((acc, val) => acc + val.win, 0);
+          setBalance(balance + total);
           setCoupons(randomWin);
           setTimer(seconds);
           const resultTimeoutId = setTimeout(() => {

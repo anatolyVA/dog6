@@ -1,36 +1,22 @@
 import { Button } from "../ui/button.tsx";
-import { whoWinsT } from "../utils/config.ts";
+import { SelectedBet } from "../ui/grid-item.tsx";
+import { whoWinsT } from "../utils/test-variables.ts";
 import { decimalDotToComma } from "../utils/decimal-dot-to-comma.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
-
-export enum WhoWinBet {
-  WINNER,
-  FIRST_OR_SECOND,
-  FIRST_BETWEEN_THIRD,
-  EVEN,
-  ODD,
-  ABOVE,
-  BELOW,
-}
-
-export type WhoWinSelectedBet = {
-  betType: WhoWinBet;
-  coeff: number;
-  dogs: number[];
-};
+import { BetType } from "../utils/types/bet-type.ts";
 
 export function WhoWin() {
   const coeffs = [1.4, 3.2, 6.5, 8, 5.3, 9.4];
   const whoWins = useSelectedStore((state) => state.whoWins);
   const setWhoWins = useSelectedStore((state) => state.setWhoWins);
 
-  const filterDogsByBetType = (betType: WhoWinBet) => {
+  const filterDogsByBetType = (betType: BetType) => {
     return whoWins
       .filter((bet) => bet.betType === betType)
       .flatMap((bet) => bet.dogs);
   };
 
-  const onSelectBet = (bet: WhoWinSelectedBet) => {
+  const onSelectBet = (bet: SelectedBet) => {
     setWhoWins(newWhoWinSelect(whoWins, bet));
   };
 
@@ -49,55 +35,55 @@ export function WhoWin() {
           label="Победитель"
           iconName="win-1_1"
           coeffs={coeffs}
-          selected={filterDogsByBetType(WhoWinBet.WINNER)}
+          selected={filterDogsByBetType(BetType.WINNER)}
           onSelectBet={onSelectBet}
-          betType={WhoWinBet.WINNER}
+          betType={BetType.WINNER}
         />
         <WhoWinRow
-          label="Место 1-2"
+          label={BetType.FIRST_OR_SECOND}
           iconName="win-2_1"
           coeffs={coeffs}
-          selected={filterDogsByBetType(WhoWinBet.FIRST_OR_SECOND)}
+          selected={filterDogsByBetType(BetType.FIRST_OR_SECOND)}
           onSelectBet={onSelectBet}
-          betType={WhoWinBet.FIRST_OR_SECOND}
+          betType={BetType.FIRST_OR_SECOND}
         />
         <WhoWinRow
-          label="Место 1-3"
+          label={BetType.FIRST_BETWEEN_THIRD}
           iconName="win-3_1"
           coeffs={coeffs}
-          selected={filterDogsByBetType(WhoWinBet.FIRST_BETWEEN_THIRD)}
+          selected={filterDogsByBetType(BetType.FIRST_BETWEEN_THIRD)}
           onSelectBet={onSelectBet}
-          betType={WhoWinBet.FIRST_BETWEEN_THIRD}
+          betType={BetType.FIRST_BETWEEN_THIRD}
         />
       </div>
       <div className="flex justify-between items-center h-full w-full">
         <SelectOdd
           label="Нечёт"
           coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === WhoWinBet.ODD)}
+          isSelected={!!whoWins.find((b) => b.betType === BetType.ODD)}
           onSelect={onSelectBet}
-          betType={WhoWinBet.ODD}
+          betType={BetType.ODD}
         />
         <SelectOdd
           label="Чёт"
           coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === WhoWinBet.EVEN)}
+          isSelected={!!whoWins.find((b) => b.betType === BetType.EVEN)}
           onSelect={onSelectBet}
-          betType={WhoWinBet.EVEN}
+          betType={BetType.EVEN}
         />
         <SelectOdd
           label="Меньше"
           coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === WhoWinBet.BELOW)}
+          isSelected={!!whoWins.find((b) => b.betType === BetType.BELOW)}
           onSelect={onSelectBet}
-          betType={WhoWinBet.BELOW}
+          betType={BetType.BELOW}
         />
         <SelectOdd
           label="Больше"
           coeff={5.5}
-          isSelected={!!whoWins.find((b) => b.betType === WhoWinBet.ABOVE)}
+          isSelected={!!whoWins.find((b) => b.betType === BetType.ABOVE)}
           onSelect={onSelectBet}
-          betType={WhoWinBet.ABOVE}
+          betType={BetType.ABOVE}
         />
       </div>
     </div>
@@ -116,14 +102,14 @@ function WhoWinRow({
   iconName?: string;
   selected: number[];
   coeffs: number[];
-  onSelectBet: (bet: WhoWinSelectedBet) => void;
-  betType: WhoWinBet;
+  onSelectBet: (bet: SelectedBet) => void;
+  betType: BetType;
 }) {
   const handleClick = (index: number) => {
     onSelectBet({ betType, dogs: [index + 1], coeff: coeffs[index] });
   };
 
-  const isTypeFirstOrSecond = betType === WhoWinBet.FIRST_OR_SECOND;
+  const isTypeFirstOrSecond = betType === BetType.FIRST_OR_SECOND;
 
   return (
     <>
@@ -191,18 +177,18 @@ function SelectOdd({
   label: string;
   coeff: number;
   isSelected: boolean;
-  onSelect: (bet: WhoWinSelectedBet) => void;
-  betType: WhoWinBet;
+  onSelect: (bet: SelectedBet) => void;
+  betType: BetType;
 }) {
   const dogs = [1, 2, 3, 4, 5, 6].filter((value) => {
     switch (betType) {
-      case WhoWinBet.ODD:
+      case BetType.ODD:
         return value % 2 !== 0;
-      case WhoWinBet.EVEN:
+      case BetType.EVEN:
         return value % 2 === 0;
-      case WhoWinBet.ABOVE:
+      case BetType.ABOVE:
         return value > 3;
-      case WhoWinBet.BELOW:
+      case BetType.BELOW:
         return value < 4;
       default:
         return true;
@@ -218,7 +204,7 @@ function SelectOdd({
   const thirdSprite = `sprite s${dogs[2]}`;
 
   return (
-    <div
+    <Button
       className={`who-win__winner-item sprite cell-win-odd ${isSelected ? "cell-win-odd_active" : ""}`}
       onClick={handleClick}
     >
@@ -239,19 +225,16 @@ function SelectOdd({
       >
         {decimalDotToComma(coeff)}
       </span>
-    </div>
+    </Button>
   );
 }
 
-export const newWhoWinSelect = (
-  prev: WhoWinSelectedBet[],
-  bet: WhoWinSelectedBet,
-) => {
+export const newWhoWinSelect = (prev: SelectedBet[], bet: SelectedBet) => {
   if (
-    bet.betType === WhoWinBet.ABOVE ||
-    bet.betType === WhoWinBet.BELOW ||
-    bet.betType === WhoWinBet.ODD ||
-    bet.betType === WhoWinBet.EVEN
+    bet.betType === BetType.ABOVE ||
+    bet.betType === BetType.BELOW ||
+    bet.betType === BetType.ODD ||
+    bet.betType === BetType.EVEN
   ) {
     if (prev.find((b) => b.betType === bet.betType)) {
       return prev.filter((b) => b.betType !== bet.betType);

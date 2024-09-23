@@ -14,22 +14,15 @@ import { GameState, useGameStore } from "../utils/stores/use-game-store.ts";
 import { useRulesPopupStore } from "../utils/stores/use-rules-popup-store.ts";
 
 export function GameLeftBlock() {
-  const state = useGameStore((state) => state.state);
-  const openRules = useRulesPopupStore((state) => state.open);
+  const gameState = useGameStore((state) => state.state);
+  const handleOpenRules = useRulesPopupStore((state) => state.open);
 
   return (
-    <div
-      className={cn(
-        "leftBlock",
-        state === GameState.GAME
-          ? "grid-rows-[calc(125px*var(--zoomCoef))_1fr_!important]"
-          : "",
-      )}
-    >
+    <div className={cn("leftBlock", getClassNamesForGameState(gameState))}>
       <div
         className={cn(
           "left-block__top",
-          state === GameState.RESULTS && "d-none",
+          getVisibilityClassForResults(gameState),
         )}
       >
         <header className="left-block__header overflow-hidden">
@@ -40,17 +33,38 @@ export function GameLeftBlock() {
             <JackpotValue />
           </div>
           <Button
-            onClick={openRules}
+            onClick={handleOpenRules}
             className="button-info self-center mb-[calc(8px*var(--zoomCoef))]"
           />
         </header>
         <Timeline />
       </div>
-      {state === GameState.GAME ? (
-        <Video />
-      ) : state === GameState.RESULTS ? (
-        <Result />
-      ) : (
+      {getGameContent(gameState)}
+    </div>
+  );
+}
+
+const getClassNamesForGameState = (gameState: GameState) => {
+  switch (gameState) {
+    case GameState.GAME:
+      return "grid-rows-[calc(125px*var(--zoomCoef))_1fr_!important]";
+    default:
+      return "";
+  }
+};
+
+const getVisibilityClassForResults = (gameState: GameState) => {
+  return gameState === GameState.RESULTS ? "d-none" : "";
+};
+
+const getGameContent = (gameState: GameState) => {
+  switch (gameState) {
+    case GameState.GAME:
+      return <Video />;
+    case GameState.RESULTS:
+      return <Result />;
+    default:
+      return (
         <TabList activeTabIndex={0}>
           <TabItem className="appearance-animation" label="Кто выиграет">
             <WhoWin />
@@ -80,7 +94,6 @@ export function GameLeftBlock() {
             <Top />
           </TabItem>
         </TabList>
-      )}
-    </div>
-  );
-}
+      );
+  }
+};

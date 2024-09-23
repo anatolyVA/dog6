@@ -1,9 +1,20 @@
 import { GridItem, SelectedBet } from "../ui/grid-item.tsx";
 import { cn } from "../utils/cn.ts";
-import { exactaT, quinellaT, trifectaT, whoWinsT } from "../utils/config.ts";
+import {
+  exactaT,
+  quinellaT,
+  trifectaT,
+  whoWinsT,
+} from "../utils/test-variables.ts";
 import { newSelect } from "../utils/new-select.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
-import { newWhoWinSelect, WhoWinSelectedBet } from "./who-win.tsx";
+import { BetType } from "../utils/types/bet-type.ts";
+import { newWhoWinSelect } from "./who-win.tsx";
+
+export type Top = {
+  hot: SelectedBet[];
+  cold: SelectedBet[];
+};
 
 export function Top() {
   const whoWins = useSelectedStore((state) => state.whoWins);
@@ -16,8 +27,8 @@ export function Top() {
   const setQuinella = useSelectedStore((state) => state.setQuinella);
   const setTrifecta = useSelectedStore((state) => state.setTrifecta);
 
-  const handleWhoWinsSelect = (bet: SelectedBet | WhoWinSelectedBet) => {
-    setWhoWins(newWhoWinSelect(whoWins, bet as WhoWinSelectedBet));
+  const handleWhoWinsSelect = (bet: SelectedBet) => {
+    setWhoWins(newWhoWinSelect(whoWins, bet));
   };
 
   const handleExactaSelect = (bet: SelectedBet) => {
@@ -81,14 +92,15 @@ function TopContentLine({
   labelsClassName,
 }: {
   label: string;
-  hot: SelectedBet[] | WhoWinSelectedBet[];
-  cold: SelectedBet[] | WhoWinSelectedBet[];
-  selected: SelectedBet[] | WhoWinSelectedBet[];
-  onSelect: (bet: SelectedBet | WhoWinSelectedBet) => void;
+  betType?: BetType;
+  hot: SelectedBet[];
+  cold: SelectedBet[];
+  selected: SelectedBet[];
+  onSelect: (bet: SelectedBet) => void;
   labelsClassName?: string;
   className?: string;
 }) {
-  const handleSelect = (bet: SelectedBet | WhoWinSelectedBet) => {
+  const handleSelect = (bet: SelectedBet) => {
     onSelect(bet);
   };
 
@@ -104,6 +116,7 @@ function TopContentLine({
           {cold.map((item, index) => (
             <GridItem
               key={index}
+              betType={item.betType}
               dogs={item.dogs}
               coeff={item.coeff}
               isCold={true}
@@ -125,6 +138,7 @@ function TopContentLine({
           {hot.map((item, index) => (
             <GridItem
               key={index}
+              betType={item.betType}
               dogs={item.dogs}
               coeff={item.coeff}
               isHot={true}

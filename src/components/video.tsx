@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.tsx";
+import { gameTime } from "../utils/config.ts";
 import { formatTime } from "../utils/format-time.ts";
-import {
-  getSettings,
-  ISettings,
-  updateSetting,
-  VideoQualityValue,
-} from "../utils/stores/settings.ts";
+import { VideoQualityValue } from "../utils/settings.ts";
+import { useSettingsStore } from "../utils/stores/use-settings-store.ts";
 
 export function Video() {
-  const [timer, setTimer] = useState(10);
-  const settings = getSettings();
-  const [state, setState] = useState<ISettings>(settings);
+  const [timer, setTimer] = useState(gameTime);
+  const settings = useSettingsStore((state) => state.userSettings);
+  const updateSetting = useSettingsStore((state) => state.updateSetting);
 
   const handleChangeOnOff = (key: "sound" | "video") => {
     const newSetting = settings[key] === "on" ? "off" : "on";
     updateSetting(key, newSetting);
-    setState({
-      ...state,
-      [key]: newSetting,
-    });
   };
 
   const handleVideoQuality = () => {
     const arr: VideoQualityValue[] = ["auto", "high", "low"];
-    const newSetting = arr[arr.indexOf(state.videoQuality) + 1] || arr[0];
+    const newSetting = arr[arr.indexOf(settings.videoQuality) + 1] || arr[0];
     updateSetting("videoQuality", newSetting);
-    setState({
-      ...state,
-      videoQuality: newSetting,
-    });
   };
 
   useEffect(() => {

@@ -1,16 +1,15 @@
 import { create } from "zustand/index";
-import { WhoWinSelectedBet } from "../../components/who-win.tsx";
 import { SelectedBet } from "../../ui/grid-item.tsx";
 
 type State = {
-  whoWins: WhoWinSelectedBet[];
+  whoWins: SelectedBet[];
   exacta: SelectedBet[];
   trifecta: SelectedBet[];
   quinella: SelectedBet[];
 };
 
 type Action = {
-  setWhoWins: (whoWins: WhoWinSelectedBet[]) => void;
+  setWhoWins: (whoWins: SelectedBet[]) => void;
   setExacta: (exacta: SelectedBet[]) => void;
   setTrifecta: (trifecta: SelectedBet[]) => void;
   setQuinella: (quinella: SelectedBet[]) => void;

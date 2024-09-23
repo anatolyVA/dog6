@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button.tsx";
+import { resultsTime } from "../utils/config.ts";
 import { useGameStore } from "../utils/stores/use-game-store.ts";
 import { useTimerStore } from "../utils/stores/use-timer-store.ts";
+import { WinBlock } from "./win-block.tsx";
 
 export function Result() {
   const winners = [1, 2, 3];
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(resultsTime);
   const startBets = useGameStore((state) => state.startBets);
   const resetTimeouts = useTimerStore((state) => state.resetTimeouts);
 
@@ -56,6 +58,7 @@ export function Result() {
           ></div>
         </div>
       </div>
+      <WinBlock />
       <Button onClick={handleCloseResult} className="result__close"></Button>
     </div>
   );

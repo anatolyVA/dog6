@@ -2,9 +2,10 @@ import React from "react";
 import { Button } from "../ui/button.tsx";
 import { GridItem, SelectedBet } from "../ui/grid-item.tsx";
 import { cn } from "../utils/cn.ts";
-import { trifectaT } from "../utils/config.ts";
+import { trifectaT } from "../utils/test-variables.ts";
 import { newSelect } from "../utils/new-select.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
+import { BetType } from "../utils/types/bet-type.ts";
 
 export function Trifecta() {
   const trifecta = useSelectedStore((state) => state.trifecta);
@@ -31,6 +32,7 @@ export function Trifecta() {
                   isSelected={
                     !!trifecta.find((b) => b.dogs.join("-") === dogs.join("-"))
                   }
+                  betType={BetType.TRIFECTA}
                   isHot={
                     !!trifectaT.hot.find(
                       (b) => b.dogs.join("-") === dogs.join("-"),

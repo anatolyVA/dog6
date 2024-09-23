@@ -1,13 +1,9 @@
-import { GridItem } from "../ui/grid-item.tsx";
-import { quinellaT } from "../utils/config.ts";
+import { GridItem, SelectedBet } from "../ui/grid-item.tsx";
+import { quinellaT } from "../utils/test-variables.ts";
 import { generateUniquePairs } from "../utils/generate-unique-pairs.ts";
 import { newSelect } from "../utils/new-select.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
-
-type SelectedBet = {
-  dogs: number[];
-  coeff: number;
-};
+import { BetType } from "../utils/types/bet-type.ts";
 
 export function Quinella() {
   const quinella = useSelectedStore((state) => state.quinella);
@@ -35,6 +31,7 @@ export function Quinella() {
                   ? "text-[#8bbaea_!important]"
                   : ""
             }
+            betType={BetType.QUINELLA}
             isHot={
               !!quinellaT.hot.find((b) => b.dogs.join("-") === dogs.join("-"))
             }

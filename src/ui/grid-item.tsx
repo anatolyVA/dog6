@@ -1,3 +1,4 @@
+import { BetType } from "../utils/types/bet-type.ts";
 import { cn } from "../utils/cn.ts";
 import { decimalDotToComma } from "../utils/decimal-dot-to-comma.ts";
 import { Button } from "./button.tsx";
@@ -5,11 +6,13 @@ import { Button } from "./button.tsx";
 export type SelectedBet = {
   coeff: number;
   dogs: number[];
+  betType: BetType;
 };
 
 export function GridItem({
   dogs,
   coeff,
+  betType,
   isHot,
   isCold,
   className,
@@ -19,6 +22,7 @@ export function GridItem({
 }: {
   dogs: number[];
   coeff: number;
+  betType?: BetType;
   isHot?: boolean;
   isCold?: boolean;
   className?: string;
@@ -27,7 +31,7 @@ export function GridItem({
   onSelect: (bet: SelectedBet) => void;
 }) {
   const handleSelect = () => {
-    onSelect({ dogs, coeff });
+    onSelect({ dogs, coeff, betType: betType ?? BetType.WINNER });
   };
   return (
     <Button

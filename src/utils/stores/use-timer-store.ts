@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { betsTime } from "../config.ts";
 
 type State = {
   timer: number;
@@ -15,8 +16,8 @@ type Action = {
 };
 
 export const useTimerStore = create<State & Action>((set) => ({
-  timer: 30,
-  seconds: 30,
+  timer: betsTime,
+  seconds: betsTime,
   resultTimeout: undefined,
   gameTimeout: undefined,
 

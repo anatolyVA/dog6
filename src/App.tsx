@@ -1,15 +1,14 @@
 import { useEffect } from "react";
 import { Game } from "./modules/game.tsx";
-import {
-  defaultSettings,
-  getSettings,
-  saveSettings,
-} from "./utils/stores/settings.ts";
+import { defaultSettings, getSettings } from "./utils/settings.ts";
+import { useSettingsStore } from "./utils/stores/use-settings-store.ts";
 
 function App() {
+  const saveSettingsStore = useSettingsStore((state) => state.saveSettings);
   useEffect(() => {
     const settings = getSettings();
-    if (!settings) saveSettings(defaultSettings);
+    if (!settings) saveSettingsStore(defaultSettings);
+    else saveSettingsStore(settings);
   }, []);
 
   return (

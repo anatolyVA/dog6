@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Balance } from "../components/balance.tsx";
 import { BetTable } from "../components/bet-table.tsx";
 import { Button } from "../ui/button.tsx";
 import { cn } from "../utils/cn.ts";
+import { Coupon, useCouponStore } from "../utils/stores/use-coupon-store.ts";
 import { GameState, useGameStore } from "../utils/stores/use-game-store.ts";
 import { useMenuPopupStore } from "../utils/stores/use-menu-popup-store.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
@@ -18,19 +20,7 @@ export function GameRightBlock() {
       )}
     >
       <header className="flex items-center justify-end">
-        <div className="flex items-center">
-          <div className="text-36 text-[#fcd703] uppercase mt-[calc(8px*var(--zoomCoef))] scale-text">
-            Баланс
-          </div>
-          <img
-            src="src/assets/svg/USD.svg"
-            className="rightBlock-balanceCur"
-            alt="$"
-          />
-          <div className="text-52 font-bold scale-text mr-[calc(-10px*var(--zoomCoef))]">
-            50 000
-          </div>
-        </div>
+        <Balance />
       </header>
       <BetTable />
       {
@@ -44,13 +34,15 @@ export function GameRightBlock() {
 
 function GameRightBlockControls() {
   const [count, setCount] = useState(0.5);
+  const gameState = useGameStore((state) => state.state);
+
   const whoWins = useSelectedStore((state) => state.whoWins);
   const exacta = useSelectedStore((state) => state.exacta);
   const trifecta = useSelectedStore((state) => state.trifecta);
   const quinella = useSelectedStore((state) => state.quinella);
   const clear = useSelectedStore((state) => state.clear);
 
-  const gameState = useGameStore((state) => state.state);
+  const addCoupons = useCouponStore((state) => state.addCoupons);
 
   const selectedLength =
     whoWins.length + exacta.length + trifecta.length + quinella.length;
@@ -58,6 +50,17 @@ function GameRightBlockControls() {
   const openMenu = useMenuPopupStore((state) => state.open);
 
   const handleBet = () => {
+    const coupons: Coupon[] = [
+      ...whoWins,
+      ...exacta,
+      ...trifecta,
+      ...quinella,
+    ].map((val) => ({
+      ...val,
+      bet: count,
+      win: 0,
+    }));
+    addCoupons(coupons);
     clear();
   };
 

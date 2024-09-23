@@ -1,8 +1,9 @@
 import { GridItem, SelectedBet } from "../ui/grid-item.tsx";
-import { exactaT } from "../utils/config.ts";
+import { exactaT } from "../utils/test-variables.ts";
 import { generateUniquePairs } from "../utils/generate-unique-pairs.ts";
 import { newSelect } from "../utils/new-select.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
+import { BetType } from "../utils/types/bet-type.ts";
 
 export function Exacta() {
   const exacta = useSelectedStore((state) => state.exacta);
@@ -21,7 +22,8 @@ export function Exacta() {
         return (
           <GridItem
             dogs={dogs}
-            coeff={5.5}
+            coeff={3.5}
+            betType={BetType.EXACTA}
             isHot={
               !!exactaT.hot.find((b) => b.dogs.join("-") === dogs.join("-"))
             }

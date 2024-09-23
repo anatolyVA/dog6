@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { cn } from "../utils/cn.ts";
+import { betsClosedTime, gameTime, resultsTime } from "../utils/config.ts";
 import { formatTime } from "../utils/format-time.ts";
+import { useCouponStore } from "../utils/stores/use-coupon-store.ts";
 import { GameState, useGameStore } from "../utils/stores/use-game-store.ts";
 import { useSelectedStore } from "../utils/stores/use-selected-store.ts";
 import { useTimerStore } from "../utils/stores/use-timer-store.ts";
@@ -22,6 +24,16 @@ export function Timeline() {
   const startBetsClosed = useGameStore((state) => state.startBetsClosed);
   const startResult = useGameStore((state) => state.startResults);
   const clearSelected = useSelectedStore((state) => state.clear);
+
+  const clearCoupons = useCouponStore((state) => state.clear);
+  const setCoupons = useCouponStore((state) => state.setCoupons);
+  const coupons = useCouponStore((state) => state.coupons);
+
+  useEffect(() => {
+    if (state === GameState.BETS) {
+      clearCoupons();
+    }
+  }, [state]);
 
   useEffect(() => {
     let interval = null;
@@ -47,14 +59,21 @@ export function Timeline() {
         startGame();
         const gameTimeoutId = setTimeout(() => {
           startResult();
+
+          // random win
+          const randomWin = coupons.map((value) => ({
+            ...value,
+            win: Math.random() > 0.5 ? value.coeff * value.bet : 0,
+          }));
+          setCoupons(randomWin);
           setTimer(seconds);
           const resultTimeoutId = setTimeout(() => {
             startBets();
-          }, 10000);
+          }, resultsTime * 1000);
           setResultTimeout(resultTimeoutId);
-        }, 10000);
+        }, gameTime * 1000);
         setGameTimeout(gameTimeoutId);
-      }, 4000);
+      }, betsClosedTime * 1000);
 
       return () => {
         clearTimeout(delayTimeout);

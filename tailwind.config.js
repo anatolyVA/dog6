@@ -10,6 +10,8 @@ export default {
         32: "calc(32px * var(--zoomCoef))",
         34: "calc(34px * var(--zoomCoef))",
         36: "calc(36px * var(--zoomCoef))",
+        39: "calc(39px * var(--zoomCoef))",
+        40: "calc(40px * var(--zoomCoef))",
         42: "calc(42px * var(--zoomCoef))",
         50: "calc(50px * var(--zoomCoef))",
         52: "calc(52px * var(--zoomCoef))",

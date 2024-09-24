@@ -58,9 +58,9 @@ export function WhoWin() {
       <div className="flex justify-between items-center h-full w-full">
         {[
           { label: "Нечёт", coeff: 5.5, betType: BetType.ODD },
-          { label: "Чёт", coeff: 5.5, betType: BetType.EVEN },
-          { label: "Меньше", coeff: 5.5, betType: BetType.BELOW },
-          { label: "Больше", coeff: 5.5, betType: BetType.ABOVE },
+          { label: "Чёт", coeff: 2.3, betType: BetType.EVEN },
+          { label: "Меньше", coeff: 8.6, betType: BetType.BELOW },
+          { label: "Больше", coeff: 4.2, betType: BetType.ABOVE },
         ].map((props, index) => (
           <SelectOdd
             key={index}
@@ -191,7 +191,7 @@ function SelectOdd({
 
   return (
     <Button
-      className={`who-win__winner-item sprite cell-win-odd ${isSelected ? "cell-win-odd_active" : ""}`}
+      className={`who-win__winner-item sprite cell-win-odd items-center ${isSelected ? "cell-win-odd_active" : ""}`}
       onClick={handleClick}
     >
       <div className="flex justify-around items-center">

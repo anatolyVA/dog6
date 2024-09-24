@@ -35,6 +35,7 @@ export function GameRightBlock() {
 function GameRightBlockControls() {
   const [count, setCount] = useState(0.5);
   const gameState = useGameStore((state) => state.state);
+  const balance = useGameStore((state) => state.balance);
 
   const whoWins = useSelectedStore((state) => state.whoWins);
   const exacta = useSelectedStore((state) => state.exacta);
@@ -46,12 +47,15 @@ function GameRightBlockControls() {
 
   const selectedLength =
     whoWins.length + exacta.length + trifecta.length + quinella.length;
-  const isActive = selectedLength > 0 && gameState === GameState.BETS;
   const openMenu = useMenuPopupStore((state) => state.open);
   const setBalance = useGameStore((state) => state.setBalance);
-  const balance = useGameStore((state) => state.balance);
+  const isActive =
+    selectedLength > 0 &&
+    gameState === GameState.BETS &&
+    balance >= count * selectedLength;
 
   const handleBet = () => {
+    if (balance < count * selectedLength) return;
     const total = count * selectedLength;
     setBalance(balance - total);
     const coupons: Coupon[] = [

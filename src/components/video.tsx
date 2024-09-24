@@ -21,6 +21,8 @@ export function Video() {
     updateSetting("videoQuality", newSetting);
   };
 
+  const isVideoLoading = true;
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : 0));
@@ -38,12 +40,20 @@ export function Video() {
       </div>
       <div className="video__block">
         <div className="video-container">
-          <div className="no-video-content">
-            <div className="uppercase font-bold text-42">
-              До окончания забега
+          {settings.video === "on" ? (
+            isVideoLoading ? (
+              <span className="uppercase text-32 text-[#fcd703]">Loading</span>
+            ) : (
+              <video className="video-container__video" />
+            )
+          ) : (
+            <div className="no-video-content">
+              <div className="uppercase font-bold text-42">
+                До окончания забега
+              </div>
+              <div className="text-70 font-bold">{formatTime(timer)}</div>
             </div>
-            <div className="text-70 font-bold">{formatTime(timer)}</div>
-          </div>
+          )}
         </div>
       </div>
       <div className="video__controls">
